@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ben02-wil.github.io/b-portfolio/sitemap.xml
