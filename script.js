@@ -1,15 +1,32 @@
-function toggleMenu() {
-    document.getElementById("menu").classList.toggle("active");
+// ===== MENU TOGGLE =====
+const menuToggle = document.getElementById('menu-toggle');
+const menu = document.getElementById('menu');
+
+if (menuToggle && menu) {
+    menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        menuToggle.setAttribute('aria-expanded', menu.classList.contains('active'));
+    });
+
+    // Close menu when a link is clicked
+    menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+
+    // Close menu on scroll
+    window.addEventListener('scroll', () => {
+        menu.classList.remove('active');
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+    });
 }
 
-// Close menu when a link is clicked
-document.querySelectorAll('#menu a').forEach(link => {
-    link.addEventListener('click', () => {
-        document.getElementById("menu").classList.remove("active");
-    });
-});
-
-// Smooth fade-in animation for elements on scroll
+// ===== SCROLL ANIMATIONS =====
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -18,17 +35,30 @@ const observerOptions = {
 const observer = new IntersectionObserver(function(entries) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.classList.add('fade-in');
             observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
-// Add animation to cards and sections on load
-document.querySelectorAll('.card, .skill-chip, section').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+// Add animation to cards, sections on load
+const elementsToAnimate = document.querySelectorAll('.card, .skill-chip, section, .badge');
+elementsToAnimate.forEach(el => {
+    el.classList.add('animate-on-scroll');
     observer.observe(el);
+});
+
+// ===== SMOOTH SCROLL FALLBACK =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
 });

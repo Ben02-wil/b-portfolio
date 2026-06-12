@@ -1,4 +1,23 @@
+# Robots.txt for ben02-wil.github.io/b-portfolio
+# Allow crawling by all robots
 User-agent: *
 Allow: /
 
+# Specify sitemap location
 Sitemap: https://ben02-wil.github.io/b-portfolio/sitemap.xml
+
+# Disallow private pages (if any)
+# Disallow: /private/
+
+# Crawl delay to prevent overload (optional)
+Crawl-delay: 1
+
+# Specific rules for Google
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Specific rules for Bingbot
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
